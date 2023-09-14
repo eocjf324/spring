@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yedam.app.emp.mapper.EmpMapper"> <!-- namesapce 적용될 인터페이스 -->
+
+	<!-- 전체조회 -->
+	<select id="seleletEmplAllList" resultType="EmpVO">
+		SELECT EMPLOYEE_ID
+				, FIRST_NAME
+				, LAST_NAME
+				, EMAIL
+				, PHONE_NUMBER
+				, HIRE_DATE
+				, JOB_ID
+				, SALARY
+				, COMMISSION_PCT
+				, MANAGER_ID
+				, DEPARTMENT_ID
+		FROM EMPLOYEES
+		<where>
+			<if test="managerId > 0">
+				MANAGER_ID = #{managerId}
+			</if>
+			<if test="departmentId > 0">
+				DEPARTMENT_ID = #{departmentId}
+			</if>
+		</where>
+		ORDER BY EMPLOYEE_ID
+	</select>
+	<!-- 단건조회 -->
+	<select id="selectEmpInfo" resultType="EmpVO">
+	
+		SELECT EMPLOYEE_ID
+				, FIRST_NAME
+				, LAST_NAME
+				, EMAIL
+				, PHONE_NUMBER
+				, HIRE_DATE
+				, JOB_ID
+				, SALARY
+				, COMMISSION_PCT
+				, MANAGER_ID
+				, DEPARTMENT_ID
+		FROM EMPLOYEES	
+		WHERE employee_id = #{employeeId}  <!-- #,$ preparementstate, statement 차이이넫 찾아봐 -->
+	
+	</select>
+	<!-- 등록 -->
+	<insert id="insertEmpInfo" parameterType="EmpVO">
+		<!-- selectKey 3가지 속성 -->
+		 <!-- keyProperty parameterType의 필드중 하나 
+		 	  resultType  keyProperty의 타입 --> 
+		<selectKey keyProperty="employeeId"  
+				   resultType="int"
+				   order="BEFORE" >
+			SELECT NVL(MAX(employee_id),0) +1
+			FROM   employees
+		</selectKey>
+		INSERT INTO EMPLOYEES
+				(
+					employee_id
+					<if test="firstName != null and !firstName.equals('')">
+					, first_name
+					</if>
+					, last_name
+					, email
+					, hire_date
+					, job_id
+					<if test="departmentId > 0 ">
+					, department_id
+					</if>
+				)
+		VALUES
+				(
+					#{employeeId}
+					<if test="firstName != null and !firstName.equals('')">
+					, #{firstName}
+					</if>
+					, #{lastName}
+					, #{email}
+					<choose>
+						<when test="hireDate == null">
+							, sysdate
+						</when>
+						<otherwise> <!--  null이 아닐경우 -->
+							, #{hireDate}
+						</otherwise>
+					</choose>
+					, #{jobId}
+					<if test="departmentId > 0 ">
+					, #{departmentId}	
+					</if>
+				)
+	</insert>
+	<!-- 수정: 급여를 정해진 비율로 인상 -->
+	<update id="updateEmpSal"> <!-- parameterMap 삭제됨//  -->
+	
+	</update>
+	<!-- 수정: 사원 정보 수정 -->
+	<update id="updateEmpInfo" parameterType="EmpVO">
+	
+	</update>
+	
+	<!-- 삭제 -->
+	<delete id="deleteEmpInfo" parameterType="int">
+	
+	</delete>
+	
+</mapper>
