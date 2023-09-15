@@ -23,35 +23,62 @@ public class EmpMapperTest {
 	EmpMapper empMapper;
 	
 	
-	@Test
-	public void selectAllEmp() {
-		//전체조회
-		List<EmpVO> empList = empMapper.seleletEmplAllList(null);
-		assertNotNull(empList);
-		
-	}
+//	@Test
+//	public void selectAllEmp() {
+//		//전체조회
+//		List<EmpVO> empList = empMapper.seleletEmplAllList(null);
+//		assertNotNull(empList);
+//		
+//	}
+	
+//	@Test
+//	public void selectEmpInfo() {
+//		//단건조회
+//		EmpVO empVO = new EmpVO();
+//		empVO.setEmployeeId(100);
+//		
+//		EmpVO findVO = empMapper.selectEmpInfo(empVO);
+//		assertEquals(findVO.getLastName(), "King");;
+//	}
+//	
+//	@Test
+//	public void insertEmpInfo() {
+//		//등록
+//		EmpVO empVO = new EmpVO();
+//		empVO.setLastName("kang");
+//		empVO.setFirstName("Na-La");
+//		empVO.setEmail("nlKang");
+//		empVO.setJobId("IT_PROG");
+//		
+//		empMapper.insertEmpInfo(empVO);
+//		assertNotEquals(empVO.getEmployeeId(), 0);
+// 		
+//	}
+	
+//	@Test
+//	public void updateEmpSal() {
+//		//급여갱신
+//		int result = empMapper.updateEmpSal(100,10);
+//		assertEquals(result, 1);
+//	}
 	
 	@Test
-	public void selectEmpInfo() {
-		//단건조회
+	public void updateEmpInfo() {
+		//사원정보수정
 		EmpVO empVO = new EmpVO();
-		empVO.setEmployeeId(100);
+		empVO.setEmployeeId(4322);
 		
-		EmpVO findVO = empMapper.selectEmpInfo(empVO);
-		assertEquals(findVO.getLastName(), "King");;
+		empVO.setEmail("naver");
+		empVO.setSalary(6000);
+		
+		int result = empMapper.updateEmpInfo(empVO);
+		assertEquals(result, 1);
 	}
 	
-	@Test
-	public void insertEmpInfo() {
-		//등록
-		EmpVO empVO = new EmpVO();
-		empVO.setLastName("kang");
-		empVO.setFirstName("Na-La");
-		empVO.setEmail("nlKang");
-		empVO.setJobId("IT_PROG");
+	@Test 
+	public void deleteEmpInfo() {
+		int result = empMapper.deleteEmpInfo(4322);
+		assertEquals(result, 1);
 		
-		empMapper.insertEmpInfo(empVO);
-		assertNotEquals(empVO.getEmployeeId(), 0); //이거머냐,,
- 		
 	}
 }

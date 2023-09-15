@@ -93,17 +93,43 @@
 					</if>
 				)
 	</insert>
-	<!-- 수정: 급여를 정해진 비율로 인상 -->
+	<!-- 수정: 급여를 정해진 비율로 인상 
+		 매개변수 2개임.-->
 	<update id="updateEmpSal"> <!-- parameterMap 삭제됨//  -->
-	
+		UPDATE employees
+		SET    salary = salary * (1 + #{raise}/100)
+		WHERE  employee_id = #{empId}
 	</update>
 	<!-- 수정: 사원 정보 수정 -->
+	<!-- 1)단건조회 선행 -> 모든 항목에 데이터가 존재 -> 전체 업데이트  -->
+	<!-- 2)개별 정보 수정 -> Dynamic SQL 사용 -->
 	<update id="updateEmpInfo" parameterType="EmpVO">
-	
+		UPDATE employees
+		<set>
+			<if test="firstName != null and !firstName.equals('')">
+				first_name = #{firstName},
+			</if>
+			<if test="email != null and !email.equals('')">
+				email = #{email},
+			</if>
+			<!-- choose when 말고 if로 처리하는 방법 -->
+			<if test="salary lte 0">
+				salary = 1000
+			</if>
+			<if test="salary gt 0 ">
+				salary = #{salary}
+			</if>
+		</set>
+		WHERE employee_id = #{employeeId}
+		
 	</update>
 	
 	<!-- 삭제 -->
 	<delete id="deleteEmpInfo" parameterType="int">
+		DELETE FROM employees
+		WHERE  employee_id = #{eid}  <!-- 파람은 이름이 일치 
+										  파람없으면 ㅇ대충써  -->
+		
 	
 	</delete>
 	
