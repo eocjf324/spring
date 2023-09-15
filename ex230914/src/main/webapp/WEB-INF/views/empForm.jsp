@@ -51,6 +51,30 @@
 			</tr>
 		
 		</table>
+		<button type="submit">등록</button> 
 	</form>
+	<script>
+		$('form:eq(1)').on('submit', functionn(e)){
+			
+			e.preventDefault();
+			
+			//serialize 폼태그에만 작동한다.
+			let formData = $('form:eq(1)').serializeArray();
+			
+			
+			//return false;
+		});
+		
+		/*
+			Event Object
+			-메소드
+				1)preventDefault() : 해당 이벤트에 기본으로 설정된 동작을 막음.
+				2)stopPropagation(): 이벤트 버블링을 막음.  --캡쳐링 ,버블링(예시 td->tr>table->body 위로 올라감)
+			-필드
+				1)target
+				2)currentTarget
+	
+		*/
+	</script>
 </body>
 </html>
