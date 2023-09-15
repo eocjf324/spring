@@ -54,11 +54,9 @@ public class EmpController {
 		model.addAttribute("empInfo",findVO);
 	
 		return "empForm";
-			
-	
 		
 	}
-
+	
 
 
 
