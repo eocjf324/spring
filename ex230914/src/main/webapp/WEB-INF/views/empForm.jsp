@@ -60,7 +60,7 @@
 	</form>
 	<script>
 		$('form:eq(1)').on('submit', function(e){
-			e.preventDefault();
+			e.preventDefault(); //submit 막기
 			
 			//serialize 폼태그에만 작동한다.
 			let formDate = new FormData(document.getElementsByTagName('form')[1]); //자바스크립트
@@ -92,6 +92,8 @@
 			})
 			.fail(reject => console.log(reject));
 			
+			
+			//$('form:eq(1)').submit(); submit 시키는 방법
 			//return false;	
 		})
 		/*

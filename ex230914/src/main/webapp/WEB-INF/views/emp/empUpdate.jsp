@@ -32,7 +32,7 @@
 	</form>
 	
 	<script>
-	
+		
 		$('button:eq(0)').on(click, function(){
 			$ajax('empUpdate',{
 				type: 'post',
