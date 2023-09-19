@@ -1,5 +1,7 @@
 package com.yedam.app.emp.web;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -68,7 +71,6 @@ public class EmpMngController {
 	}
 	//수정 : 1)단건조회 -> 2) 수정
 	
-	
 	//수정 - Form
 	@GetMapping("empUpdate")
 	public String empUpdateForm(EmpVO empVO, Model model) {
@@ -79,12 +81,23 @@ public class EmpMngController {
 	//수정 - Process : ajax => 필수어노테이션 : @ResponseBody
 	@PostMapping("empUpdate")
 	@ResponseBody
-	public Map<String,String> empUpdateProcess(@RequestBody EmpVO empVO){
-		
+	public Map<String,String> empUpdateProcess(@RequestBody EmpVO empVO){		
 		return empService.updateEmp(empVO);
 	}
 	
-	//삭제 - 단건삭제
-	
-	//삭제 - 선택삭제
+	//삭제 - 단건삭제 :Ajax
+	@GetMapping("empDelete")
+	@ResponseBody
+	public Map<String, Object> empInfoDelete(@RequestParam Integer employeeId){
+		List<Integer> list = new ArrayList<>();
+		list.add(employeeId);
+		return empService.deleteEmp(list);
+	}
+	//삭제 - 선택삭제 : Ajax
+	@PostMapping("empDelete")
+	@ResponseBody
+	public boolean empListDelete(@RequestBody List<Integer> empList){
+		Map<String, Object> result = empService.deleteEmp(empList);
+		return (boolean)result.get("result");
+	}
 }

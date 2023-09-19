@@ -12,7 +12,8 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
-	<p>${result}</p>
+
+	<button type ="button">선택삭제</button>
 	<table>
 		<thead>
 			<tr>
@@ -81,6 +82,71 @@
 			//let empId = $(e.currentTarget).find('td:eq(1)').text();
 			location.href = 'empInfo?employeeId=' + empId;
 		});
+		
+		//단건삭제 
+		$('tr button').on('click', empInfoDel);
+		//employeeId 찾기 부모에서 자식찾는 방법이 쉽다. 
+		//tr -> td 2번째 
+		function empInfoDel(){
+			let trTag = event.currentTarget.closest('tr'); //버튼 위치에서 가까운 tr 찾기
+			let empId = $(trTag).children().eq(1).text();  
+			
+			$.ajax('empDelete?employeeId='+empId)
+			.done(result => {
+				console.log(result);
+				
+				let deletedId = result.list[0];
+				//배열에 값이 있어서 text 안됨 무조건 반복문 => each 
+				//td:eq(1)X 안됨 :총결과에서 하나 값만 가져옴
+				//nth-of-type   : 그룹중 하나 
+				$('tbody > tr > td:nth-of-type(2)').each(function(idx, tag){//function(인덱스, 실제값) 
+					if(tag.textContent == deletedId){
+						$(tag).parent().remove();
+					}
+				})
+			})
+			.fail(reject => console.log(reject));
+			
+		}
+		//선택삭제
+		$('button:eq(0)').on('click', empListDelete);
+		
+		function empListDelete(event){
+			//선택한 사원번호를 가지는 배열
+			let empIdList = getEmpList();
+
+			//ajax
+			$.ajax('empDelete',{
+				type: 'post',
+				contentType : 'application/json',
+				data : JSON.stringify(empIdList)
+			})
+			.done(result =>{
+				if(result){
+					//강제페이지전환 ->아작스 아니잖오~ 거진 안쓰는게..
+					//예외적으로 쓸경우 배열을 보내고싶을때
+					location.href="empList";
+				}
+				
+			})
+			.fail(reject => 
+				console.log(reject));	
+		}
+		
+		function getEmpList(){
+			//[] 속성 검색, id,class 제외
+			let checkTag = $('tbody input[type="checkbox"]:checked');
+			
+			let empList = [];
+			checkTag.each(function(idx, intag){
+				//input은 하위요소나 형제요소 x 따라사 부모요소로 접근 
+				let empId = $(intag).parent().next().text();	
+				empList.push(empId);
+			});
+			
+			return empList;
+		}
+		
 	</script>
 
 </body>

@@ -93,7 +93,7 @@ public class EmpServiceImpl implements EmpService{
 		map.put("result", isSuccessed);
 		map.put("list", successList);
 		
-		return null;
+		return map;
 	}
 
 }
