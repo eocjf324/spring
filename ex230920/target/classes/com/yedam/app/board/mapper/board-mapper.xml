@@ -70,7 +70,7 @@
   	
   	</insert>
   	
-  	<update id="" parameterType="BoardVo">
+  	<update id="updateBoard" parameterType="BoardVo">
   		UPDATE tbl_board
   		<set>
   			<if test="title != null and !title.equals('')">
@@ -93,8 +93,9 @@
   	
   	</update>
   	
-  	<delete id="" parameterType="int">
+  	<delete id="deleteBoard" parameterType="int">
   		DELETE FROM tbl_board
-  		WHERE  bno = #{bno}
+  		<!--  WHERE  bno = LPAD(#{bno}, 3, '0') -->
+  		WHERE TO_NUMBER(bno) = #{bno}
   	</delete>
  </mapper>
