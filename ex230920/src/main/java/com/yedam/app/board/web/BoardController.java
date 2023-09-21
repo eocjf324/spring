@@ -1,6 +1,8 @@
 package com.yedam.app.board.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ public class BoardController {
 	// 전체조회 : : URI - boardList / RETURN - board/boardList
 	@GetMapping("boardList")
 	public String boardList(Model model) {
+	
 		model.addAttribute("boardList", boardService.getBoardList());
 		return "board/boardList";
 	}
@@ -31,6 +34,13 @@ public class BoardController {
 	// 단건조회 :
 	@GetMapping("boardInfo")
 	public String boardInfo(BoardVO boardVO, Model model) {
+		List<BoardVO> list =  new ArrayList<>();
+		list.add(boardVO);
+		for(BoardVO vo : list) {
+			
+			System.out.println(vo.getBno());
+		}
+
 		model.addAttribute("boardInfo", boardService.getBoardInfo(boardVO));
 		return "board/boardInfo";
 	}
@@ -38,7 +48,7 @@ public class BoardController {
 	@GetMapping("boardInsert")
 	public String boardInsert() {
 		//등록 페이지를 호출할 때 미리 primary key를 보여야하는 경우 Model이 필요함 => selectkey 사용 안함 
-		return "board/boardInfo";
+		return "board/boardInsert";
 	}
 	// 등록 - 처리 : URI -boardInsert/ parameter - BoardVO / RETURN -전제조회 다시 호출 
 	@PostMapping("boardInsert")

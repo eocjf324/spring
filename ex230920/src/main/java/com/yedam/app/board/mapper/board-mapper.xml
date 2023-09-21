@@ -27,8 +27,8 @@
   		FROM tbl_board
   		WHERE BNO = #{bno}
   		<where>
-  			<if test = "WRITER != null and !WRITER.equals('')">
-  				WRITER = #{writer}
+  			<if test = "writer != null and !writer.equals('')">
+  				writer = #{writer}
   			</if>
   		</where>
   	</select>
@@ -36,7 +36,7 @@
   		<selectKey 	keyProperty="bno"
   					resultType="String"
   					order="BEFORE">
-			SELECT SELECT LPAD(NVL(MAX(bno),0)+1, 3, '0')
+			SELECT LPAD(NVL(MAX(bno),0)+1, 3, '0')
 			FROM   tbl_board  		
   		</selectKey>
   		INSERT INTO tbl_board
@@ -55,7 +55,7 @@
   					#{bno}
   					, #{title}
   					<choose>
-  						<when test="content !=null and !contents.equals('')">
+  						<when test="contents !=null and !contents.equals('')">
   							, #{contents}
   						</when>
   						<otherwise>
