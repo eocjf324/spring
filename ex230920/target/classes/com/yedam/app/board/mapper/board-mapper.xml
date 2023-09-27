@@ -27,8 +27,10 @@
   		FROM tbl_board
   		WHERE BNO = #{bno}
   		<where>
+
   			<if test = "writer != null and !writer.equals('')">
   				writer = #{writer}
+
   			</if>
   		</where>
   	</select>
@@ -36,7 +38,9 @@
   		<selectKey 	keyProperty="bno"
   					resultType="String"
   					order="BEFORE">
+
 			SELECT LPAD(NVL(MAX(bno),0)+1, 3, '0')
+
 			FROM   tbl_board  		
   		</selectKey>
   		INSERT INTO tbl_board
@@ -55,7 +59,9 @@
   					#{bno}
   					, #{title}
   					<choose>
+
   						<when test="contents !=null and !contents.equals('')">
+
   							, #{contents}
   						</when>
   						<otherwise>
@@ -70,7 +76,9 @@
   	
   	</insert>
   	
+
   	<update id="updateBoard" parameterType="BoardVo">
+
   		UPDATE tbl_board
   		<set>
   			<if test="title != null and !title.equals('')">
@@ -93,9 +101,11 @@
   	
   	</update>
   	
+
   	<delete id="deleteBoard" parameterType="int">
   		DELETE FROM tbl_board
   		<!--  WHERE  bno = LPAD(#{bno}, 3, '0') -->
   		WHERE TO_NUMBER(bno) = #{bno}
+
   	</delete>
  </mapper>

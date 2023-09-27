@@ -12,6 +12,7 @@ public class BoardVO {
 	private String contents;
 	private String writer;
 	private Date   regdate;
+	private Date   updateDate;
 	private Date   updatedate;
 	private String image;
 
