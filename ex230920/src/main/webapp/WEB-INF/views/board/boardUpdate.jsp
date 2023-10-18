@@ -75,6 +75,8 @@
 			$.each(formData, function(idx, obj){
 				//각 입력태그 -> 하나의 필드로 변환 
 				formObj[obj.name] = obj.value;
+				
+				
 			});
 			return formObj;
 		}

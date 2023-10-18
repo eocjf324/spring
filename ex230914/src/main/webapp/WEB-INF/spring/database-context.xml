@@ -9,9 +9,29 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
-	<context:property-placeholder
-		location="classpath:config/db.properties" />
+	<!-- <context:property-placeholder location="classpath:config/db.properties" 
+		/> -->
+	<bean id="encryptorConfig"
+		class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+		<property name="algorithm" value="PBEWithMD5AndDES" />
+		<property name="password"	value="${jasypt.encryptor.password}" />
+	</bean>
 
+	<bean id="encryptor"
+		class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+		<property name="config" ref="encryptorConfig" />
+	</bean>
+
+	<bean id="propertyConfigurer"
+		class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer">
+		<constructor-arg ref="encryptor" />
+		<property name="locations">
+			<list>
+				<value>classpath:config/db.properties</value>
+			</list>
+		</property>
+	</bean>
+	
 
 	<!-- datasource connection pool -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
@@ -37,14 +57,18 @@
 
 	</bean>
 
+
+
+
 	<!-- 스프링에서 제공하는 mybatis -->
 	<mybatis-spring:scan
 		base-package="com.yedam.app.**.mapper" /> <!-- 인터페이스 처리 -->
 
 	<!-- Transaction Manager 설정 -->
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
-	<tx:annotation-driven/>
+
+	<tx:annotation-driven />
 </beans>
