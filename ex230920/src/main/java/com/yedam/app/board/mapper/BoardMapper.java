@@ -1,4 +1,4 @@
-package com.yedam.app.board.mapper;
+ package com.yedam.app.board.mapper;
 
 import java.util.List;
 
